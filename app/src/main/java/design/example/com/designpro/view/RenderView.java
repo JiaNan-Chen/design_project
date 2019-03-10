@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -30,6 +32,7 @@ public class RenderView extends FrameLayout {
         super(context, attrs, defStyleAttr);
         mPaint.setColor(0xff00ff00);
     }
+
 
     Paint mPaint = new Paint();
 

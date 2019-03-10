@@ -31,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".RemoteActivity" />
+        <activity android:name=".ControlActivity" />
+
         <service android:name=".service.FloatingService" />
     </application>
 

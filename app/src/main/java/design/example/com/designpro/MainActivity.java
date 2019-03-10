@@ -8,6 +8,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import org.greenrobot.eventbus.EventBus;
@@ -15,6 +16,7 @@ import org.greenrobot.eventbus.EventBus;
 import java.util.Random;
 
 import design.example.com.designpro.service.FloatingService;
+import design.example.com.designpro.util.CommonUtil;
 import design.example.com.designpro.util.FloatingCheckUtil;
 import design.example.com.designpro.view.FloatingBuilder;
 import design.example.com.designpro.view.FloatingManager;
@@ -40,6 +42,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CommonUtil.checkPermission(this);
+        findViewById(R.id.control).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, ControlActivity.class));
+            }
+        });
+        findViewById(R.id.remote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, RemoteActivity.class));
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
                 FloatingCheckUtil.getPermission(this);
@@ -57,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (!Settings.canDrawOverlays(this)) {
                     Toast.makeText(this, "悬浮窗开启失败", Toast.LENGTH_SHORT).show();
+                    finish();
                 } else {
                     Toast.makeText(this, "悬浮窗开启成功", Toast.LENGTH_SHORT).show();
                     startService(new Intent(this, FloatingService.class));
