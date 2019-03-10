@@ -28,15 +28,15 @@ import static design.example.com.designpro.util.FloatingCheckUtil.REQUEST_DIALOG
  * @author HUYA JiaNan
  */
 public class MainActivity extends AppCompatActivity {
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Random random = new Random();
-            EventBus.getDefault().post(new RenderClickAction.Point(random.nextInt(1000), random.nextInt(1000)));
-            handler.sendEmptyMessageDelayed(0x00, 3000);
-        }
-    };
+//    Handler handler = new Handler() {
+//        @Override
+//        public void handleMessage(Message msg) {
+//            super.handleMessage(msg);
+//            Random random = new Random();
+//            EventBus.getDefault().post(new RenderClickAction.Point(random.nextInt(1000), random.nextInt(1000)));
+//            handler.sendEmptyMessageDelayed(0x00, 3000);
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         startService(new Intent(this, FloatingService.class));
-        handler.sendEmptyMessageDelayed(0x00, 3000);
+//        handler.sendEmptyMessageDelayed(0x00, 3000);
     }
 
     @Override
