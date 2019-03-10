@@ -179,17 +179,11 @@ public class RemoteActivity extends AppCompatActivity {
         Log.i("img", jsonObject.toString());
         final Request request = new Request.Builder().url(url)
                 .method("POST", requestBody).build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-
-            }
-        });
+        try {
+            okHttpClient.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
