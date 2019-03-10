@@ -7,10 +7,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 import design.example.com.designpro.R;
 
+/**
+ * @author HUYA JiaNan
+ */
 public abstract class FloatingBuilder<T extends View> {
     Context mContext;
 
@@ -28,7 +30,7 @@ public abstract class FloatingBuilder<T extends View> {
 
     public abstract WindowManager.LayoutParams createWindowManagerParams(int left, int top) throws Exception;
 
-    public static class RenderFloating extends FloatingBuilder<FrameLayout> {
+    public static class RenderFloating extends FloatingBuilder<RenderView> {
 
         private static RenderFloating singleton;
 
@@ -48,9 +50,9 @@ public abstract class FloatingBuilder<T extends View> {
         }
 
         @Override
-        public FrameLayout createView() {
+        public RenderView createView() {
             if (mContentView == null) {
-                mContentView = (FrameLayout) LayoutInflater.from(mContext).inflate(R.layout.render_layout, null);
+                mContentView = (RenderView) LayoutInflater.from(mContext).inflate(R.layout.render_layout, null);
             }
             return mContentView;
         }
@@ -67,7 +69,8 @@ public abstract class FloatingBuilder<T extends View> {
             params.x = left;
             params.y = top;
             params.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-            params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+            params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE;
             params.format = PixelFormat.TRANSLUCENT;
             return params;
         }

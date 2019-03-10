@@ -2,22 +2,39 @@ package design.example.com.designpro;
 
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.Random;
+
 import design.example.com.designpro.service.FloatingService;
 import design.example.com.designpro.util.FloatingCheckUtil;
 import design.example.com.designpro.view.FloatingBuilder;
 import design.example.com.designpro.view.FloatingManager;
+import design.example.com.designpro.view.RenderClickAction;
 
 import static design.example.com.designpro.util.FloatingCheckUtil.REQUEST_DIALOG_PERMISSION;
 
+/**
+ * @author HUYA JiaNan
+ */
 public class MainActivity extends AppCompatActivity {
-
-
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Random random = new Random();
+            EventBus.getDefault().post(new RenderClickAction.Point(random.nextInt(1000), random.nextInt(1000)));
+            handler.sendEmptyMessageDelayed(0x00, 3000);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         startService(new Intent(this, FloatingService.class));
+        handler.sendEmptyMessageDelayed(0x00, 3000);
     }
 
     @Override

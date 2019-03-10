@@ -4,9 +4,12 @@ import android.content.Context;
 import android.view.View;
 import android.view.WindowManager;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * 悬浮窗管理类
+ * @author HUYA JiaNan
  */
 public class FloatingManager implements View.OnClickListener {
     private static WindowManager mWindowManager;
@@ -44,6 +47,7 @@ public class FloatingManager implements View.OnClickListener {
 
     public boolean addView(View view, WindowManager.LayoutParams params, View.OnTouchListener touchListener) {
         try {
+            EventBus.getDefault().register(view);
             view.setOnTouchListener(touchListener);
             mWindowManager.addView(view, params);
             return true;
@@ -66,6 +70,7 @@ public class FloatingManager implements View.OnClickListener {
 
     public boolean removeView(View view) {
         try {
+            EventBus.getDefault().unregister(view);
             mWindowManager.removeView(view);
             return true;
         } catch (Exception e) {
