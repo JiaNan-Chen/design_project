@@ -19,10 +19,10 @@ import android.util.Log;
 import android.view.Display;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +32,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 
 import design.example.com.designpro.util.CommonUtil;
+import design.example.com.designpro.view.RenderClickAction;
+import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -56,6 +58,38 @@ public class RemoteActivity extends AppCompatActivity {
         //1、首先获取MediaProjectionManager
         mMediaProjectionManager = (MediaProjectionManager) getApplicationContext().getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+
+        new Thread() {
+            @Override
+            public void run() {
+                OkHttpClient okHttpClient = new OkHttpClient();
+                final Request request = new Request.Builder().url("http://203.195.224.187/DesignPro/getLocation")
+                        .method("GET", null).cacheControl(CacheControl.FORCE_NETWORK).build();
+                try {
+                    okHttpClient.newCall(request).execute();
+                    JSONObject o = new JSONObject(request.body().toString());
+                    DisplayMetrics metrics = new DisplayMetrics();
+                    Display display = getWindowManager().getDefaultDisplay();
+                    if (Build.VERSION.SDK_INT < 17) {
+                        display.getMetrics(metrics);
+                    } else {
+                        display.getRealMetrics(metrics);
+                    }
+                    int screenWidth = metrics.widthPixels;
+                    int screenHeight = metrics.heightPixels;
+                    EventBus.getDefault().post(new RenderClickAction.Point((int) (o.getDouble("x") * screenWidth), (int) (o.getDouble("y") * screenHeight)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
 
         new Thread() {
             @Override

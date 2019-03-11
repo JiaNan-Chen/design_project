@@ -1,15 +1,10 @@
 package design.example.com.designpro.service;
 
-import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import design.example.com.designpro.view.FloatingBuilder;
 import design.example.com.designpro.view.FloatingManager;
